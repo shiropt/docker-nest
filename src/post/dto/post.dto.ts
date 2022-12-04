@@ -21,10 +21,3 @@ export class CreatePostDto implements Omit<Post, 'id'> {
 
   authorId: number;
 }
-const ACTIVITIES = {
-  DESIGNER: '1',
-  FRONTEND_ENGINEER: '2',
-  BACKEND_ENGINEER: '3',
-  INFRASTRUCTURE_ENGINEER: '4',
-  DIRECTOR: '5',
-} as const;
