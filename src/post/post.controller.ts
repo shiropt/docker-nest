@@ -1,7 +1,21 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  ApiForbiddenResponse,
+  ApiHeader,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Post as PostModel, Prisma } from '@prisma/client';
+import { CreatePostDto, PostResponse } from './dto/post.dto';
 import { PostService } from './post.service';
+import { CreatePostResponse } from './response/post.response';
 
+@ApiTags('投稿API')
+@ApiHeader({
+  name: 'X-MyHeader',
+  description: 'Custom header',
+})
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
@@ -17,7 +31,12 @@ export class PostController {
   }
 
   @Post()
-  async createPost(@Body() post: Prisma.PostCreateInput): Promise<PostModel> {
+  @ApiOkResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
+  @ApiForbiddenResponse({ status: 403, description: 'Forbidden.' })
+  async createPost(@Body() post: CreatePostDto): Promise<PostResponse> {
     return this.postService.createPost(post);
   }
 
